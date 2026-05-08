@@ -6,81 +6,127 @@ document.addEventListener('DOMContentLoaded', function() {
     const imageWrapper = document.getElementById('imageWrapper');
     const profileImage = document.getElementById('profileImage');
     const blocksContainer = document.getElementById('blocksContainer');
+    const animationHint = document.querySelector('.animation-hint');
     let isAnimating = false;
 
-    if (imageWrapper && profileImage && blocksContainer) {
-        imageWrapper.addEventListener('click', function() {
-            if (isAnimating) return;
-            isAnimating = true;
+    function triggerPuzzleAnimation() {
+        if (isAnimating) return;
+        isAnimating = true;
 
-            const GRID_SIZE = 4;
-            const BLOCK_WIDTH = 200 / GRID_SIZE;
-            const BLOCK_HEIGHT = 240 / GRID_SIZE;
+        const imageWidth = profileImage.clientWidth || profileImage.offsetWidth || 200;
+        const imageHeight = profileImage.clientHeight || profileImage.offsetHeight || 240;
+        const GRID_SIZE = 4; // 4x4 grid = 16 puzzle pieces
+        const BLOCK_WIDTH = imageWidth / GRID_SIZE;
+        const BLOCK_HEIGHT = imageHeight / GRID_SIZE;
 
-            // Create blocks
-            blocksContainer.innerHTML = '';
-            const blocks = [];
+        // Keep container the same size as the image
+        blocksContainer.style.width = `${imageWidth}px`;
+        blocksContainer.style.height = `${imageHeight}px`;
 
-            for (let row = 0; row < GRID_SIZE; row++) {
-                for (let col = 0; col < GRID_SIZE; col++) {
-                    const block = document.createElement('div');
-                    block.className = 'image-block';
+        // Create blocks
+        blocksContainer.innerHTML = '';
+        const blocks = [];
 
-                    // Set background
-                    block.style.backgroundImage = `url('${profileImage.src}')`;
-                    block.style.setProperty('--block-x', `${-col * BLOCK_WIDTH}px`);
-                    block.style.setProperty('--block-y', `${-row * BLOCK_HEIGHT}px`);
+        for (let row = 0; row < GRID_SIZE; row++) {
+            for (let col = 0; col < GRID_SIZE; col++) {
+                const block = document.createElement('div');
+                block.className = 'image-block';
 
-                    // Random movement values
-                    const angle = Math.random() * Math.PI * 2;
-                    const distance = 80 + Math.random() * 120;
-                    const tx = Math.cos(angle) * distance;
-                    const ty = Math.sin(angle) * distance;
-                    const rotation = Math.random() * 40 - 20;
-                    const delay = (row + col) * 0.05;
+                // Set background image and position for each puzzle piece
+                block.style.backgroundImage = `url('${profileImage.src}')`;
+                block.style.setProperty('--block-x', `${-col * BLOCK_WIDTH}px`);
+                block.style.setProperty('--block-y', `${-row * BLOCK_HEIGHT}px`);
+                block.style.backgroundSize = `${imageWidth}px ${imageHeight}px`;
 
-                    block.style.setProperty('--translate', `translate(${tx}px, ${ty}px)`);
-                    block.style.setProperty('--rotation', `${rotation}deg`);
-                    block.style.setProperty('--delay', `${delay}s`);
-                    block.style.animationDelay = `${delay}s`;
+                // Calculate center position for more natural scattering
+                const centerX = (col - GRID_SIZE/2 + 0.5) * BLOCK_WIDTH;
+                const centerY = (row - GRID_SIZE/2 + 0.5) * BLOCK_HEIGHT;
+                const distance = Math.sqrt(centerX * centerX + centerY * centerY);
 
-                    blocksContainer.appendChild(block);
-                    blocks.push(block);
-                }
+                // Create puzzle-like movement patterns
+                const angle = Math.atan2(centerY, centerX) + (Math.random() - 0.5) * 0.5;
+                const moveDistance = 120 + distance * 0.8 + Math.random() * 60;
+
+                const tx = Math.cos(angle) * moveDistance;
+                const ty = Math.sin(angle) * moveDistance + Math.random() * 40 - 20; // Add some vertical variation
+                const rotation = (Math.random() - 0.5) * 90; // More dramatic rotation
+                const delay = (row * GRID_SIZE + col) * 0.04; // Staggered animation start
+
+                block.style.setProperty('--translate', `translate(${tx}px, ${ty}px)`);
+                block.style.setProperty('--rotation', `${rotation}deg`);
+                block.style.setProperty('--delay', `${delay}s`);
+                block.style.animationDelay = `${delay}s`;
+
+                blocksContainer.appendChild(block);
+                blocks.push(block);
             }
-           
-            // Hide image
-            profileImage.style.opacity = '0';
-            profileImage.style.pointerEvents = 'none';
+        }
+            
+        // Keep the image visible while the puzzle pieces animate
+        profileImage.style.opacity = '0.25';
+        profileImage.style.pointerEvents = 'none';
 
-            // Animate blocks out
-            setTimeout(() => {
-                blocks.forEach(block => block.classList.add('animate-out'));
-            }, 100);
+        // Animate blocks out
+        setTimeout(() => {
+            blocks.forEach(block => block.classList.add('animate-out'));
+        }, 100);
 
-            // Animate blocks back in
-            setTimeout(() => {
-                blocks.forEach(block => {
-                    block.classList.remove('animate-out');
-                    block.classList.add('animate-in');
-                });
-            }, 950);
+        // Animate blocks back in
+        setTimeout(() => {
+            blocks.forEach(block => {
+                block.classList.remove('animate-out');
+                block.classList.add('animate-in');
+            });
+        }, 950);
 
-            // Show image and cleanup
-            setTimeout(() => {
-                blocksContainer.innerHTML = '';
-                profileImage.style.opacity = '1';
-                profileImage.style.pointerEvents = 'auto';
-                profileImage.classList.remove('hidden');
-                isAnimating = false;
-            }, 1900);
-        });
+        // Show image and cleanup
+        setTimeout(() => {
+            blocksContainer.innerHTML = '';
+            profileImage.style.opacity = '1';
+            profileImage.style.pointerEvents = 'auto';
+            profileImage.classList.remove('hidden');
+            isAnimating = false;
+        }, 1900);
+    }
+
+    if (imageWrapper && profileImage && blocksContainer) {
+        imageWrapper.addEventListener('click', triggerPuzzleAnimation);
+    }
+
+    if (animationHint) {
+        animationHint.addEventListener('click', triggerPuzzleAnimation);
+        animationHint.style.cursor = 'pointer';
     }
 });
 
+// Hero typing effect
+const heroText = "Mechanical Engineering Student | Problem Solver | Innovator";
 
+document.addEventListener('DOMContentLoaded', function () {
+    const typedTextElement = document.getElementById('typedText');
+    const typedCursorElement = document.getElementById('typedCursor');
 
-// ================================
+    if (!typedTextElement || !typedCursorElement) return;
+
+    typedTextElement.textContent = '';
+    typedCursorElement.textContent = '|';
+
+    let charIndex = 0;
+    const typingSpeed = 80;
+
+    function typeHeroText() {
+        if (charIndex < heroText.length) {
+            typedTextElement.textContent += heroText.charAt(charIndex);
+            charIndex += 1;
+            setTimeout(typeHeroText, typingSpeed);
+        } else {
+            typedCursorElement.textContent = '';
+        }
+    }
+
+    typeHeroText();
+});
+
 // Section Navigation & Animation
 // ================================
 
@@ -391,57 +437,6 @@ window.addEventListener("click", function (e) {
     if (e.target === modal) {
         modal.style.display = "none";
     }
-});
-
-
-
-/* =====================================================
-   PROFILE IMAGE BLOCK ANIMATION
-===================================================== */
-document.addEventListener("DOMContentLoaded", () => {
-  const imageWrapper = document.getElementById("imageWrapper");
-  const profileImage = document.getElementById("profileImage");
-  const blocksContainer = document.getElementById("blocksContainer");
-
-  if (!imageWrapper || !profileImage || !blocksContainer) return;
-
-  let animating = false;
-
-  imageWrapper.addEventListener("click", () => {
-    if (animating) return;
-    animating = true;
-
-    blocksContainer.innerHTML = "";
-    const GRID = 4;
-
-    for (let r = 0; r < GRID; r++) {
-      for (let c = 0; c < GRID; c++) {
-        const block = document.createElement("div");
-        block.className = "image-block";
-        block.style.backgroundImage = `url(${profileImage.src})`;
-        block.style.backgroundPosition = `${-c * 50}px ${-r * 60}px`;
-
-        const angle = Math.random() * Math.PI * 2;
-        const distance = 120;
-        block.style.setProperty(
-          "--translate",
-          `translate(${Math.cos(angle) * distance}px, ${
-            Math.sin(angle) * distance
-          }px)`
-        );
-
-        blocksContainer.appendChild(block);
-      }
-    }
-
-    profileImage.style.opacity = "0";
-
-    setTimeout(() => {
-      blocksContainer.innerHTML = "";
-      profileImage.style.opacity = "1";
-      animating = false;
-    }, 1500);
-  });
 });
 
 /* =====================================================
