@@ -297,7 +297,7 @@ p {
 .navbar__menu {
     display: flex;
     list-style: none;
-    gap: var(--spacing-lg);
+    gap: 0.5rem;
     white-space: nowrap;
     overflow-x: auto;
     padding-bottom: 0.25rem;
@@ -1443,7 +1443,7 @@ section:nth-child(even) {
 
 @media (max-width: 768px) {
     .navbar__menu {
-        gap: var(--spacing-md);
+        gap: 0.5rem;
     }
     
     .nav-btn {
@@ -1476,7 +1476,7 @@ section:nth-child(even) {
     }
     
     .navbar__menu {
-        gap: var(--spacing-sm);
+        gap: 0.5rem;
     }
     
     h1 {
