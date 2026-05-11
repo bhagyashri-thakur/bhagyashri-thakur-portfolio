@@ -183,28 +183,28 @@ document.querySelectorAll('.section').forEach(section => {
 // ================================
 
 const form = document.querySelector('.form');
-if (form) {
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
+// if (form) {
+//     form.addEventListener('submit', function(e) {
+//         e.preventDefault();
         
-        // Get form values
-        const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-        const subject = document.getElementById('subject').value;
-        const message = document.getElementById('message').value;
+//         // Get form values
+//         const name = document.getElementById('name').value;
+//         const email = document.getElementById('email').value;
+//         const subject = document.getElementById('subject').value;
+//         const message = document.getElementById('message').value;
         
-        // Basic validation
-        if (name && email && subject && message) {
-            // Show success message
-            showNotification('Message sent successfully!', 'success');
+//         // Basic validation
+//         if (name && email && subject && message) {
+//             // Show success message
+//             showNotification('Message sent successfully!', 'success');
             
-            // Reset form
-            form.reset();
-        } else {
-            showNotification('Please fill all fields!', 'error');
-        }
-    });
-}
+//             // Reset form
+//             form.reset();
+//         } else {
+//             showNotification('Please fill all fields!', 'error');
+//         }
+//     });
+// }
 
 // ================================
 // Notification System
