@@ -9,7 +9,7 @@
 <body>
     <!-- Navigation Header -->
     <header class="header">
-        <nav class="navbar">
+        <nav class="navbar" >
             <div class="container">
                 <div class="navbar__wrapper">
                     <a href="#" class="navbar__logo">Bhagyashri Thakur</a>
@@ -20,6 +20,7 @@
                          <li><button class="nav-btn" data-section="experience"> Internship Experience</button></li>
                         <li><button class="nav-btn" data-section="certificates"> Certificates</button></li>
                         <li><button class="nav-btn" data-section="skills">Skills</button></li>
+                         <li><button class="nav-btn" data-section="researchs">Research & Contributions</button></li>
                         <li><button class="nav-btn" data-section="contact">Contact Us</button></li>
                     </ul>
                 </div>
@@ -392,27 +393,40 @@
 </section>
 
 
+<!-- Research Section -->
+<section id="researchs" class="research-section">
+
+    <h2>Research & Contributions</h2>
+
+    <div class="research-gallery">
+        <img src="images/research1.jpeg" alt="Research Image 1">
+        <img src="images/research2.jpeg" alt="Research Image 2">
+    </div>
+
+</section>
+
+
         <!-- Contact Us Section -->
         <section id="contact" class="section">
             <div class="container">
                 <h2 class="section__title">Get In Touch</h2>
                 <p class="contact__subtitle">Let's connect and discuss exciting opportunities!</p>
-                <form class="form" netlify>
+                <form class="form" name="Contact Us Form" netlify>
                     <div class="form__group">
                         <label for="name" class="form__label">Full Name</label>
-                        <input type="text" id="name" class="form__input" placeholder="Your name" required>
+                        <input type="text" id="name" name="name" class="form__input" placeholder="Your name" required>
                     </div>
                     <div class="form__group">
                         <label for="email" class="form__label">Email Address</label>
-                        <input type="email" id="email" class="form__input" placeholder="your@email.com" required>
+                        <input type="email" id="email" name="email" class="form__input" placeholder="your@email.com" required>
                     </div>
                     <div class="form__group">
                         <label for="subject" class="form__label">Subject</label>
-                        <input type="text" id="subject" class="form__input" placeholder="What's this about?" required>
+                        <input type="text" id="subject" name="subject" class="form__input" placeholder="What's this about?" required>
                     </div>
                     <div class="form__group">
                         <label for="message" class="form__label">Message</label>
-                        <textarea id="message" class="form__textarea" rows="5" placeholder="Your message here..." required></textarea>
+                        <textarea id="message" name="message" class="form__textarea" rows="5" placeholder="Your message here..." required></textarea>
                     </div>
                     <button type="submit" class="btn btn--primary">Send Message</button>
                 </form>
